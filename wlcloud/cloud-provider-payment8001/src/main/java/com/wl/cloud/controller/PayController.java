@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,15 @@ public class PayController {
 
     @Resource
     private PayService payService;
+
+    @Value("${server.port}")
+    private String port;
+
+    @GetMapping(value = "/get/info")
+    private String getInfoByConsul(@Value("${wl.info}") String wlInfo)
+    {
+        return "wlInfo: "+wlInfo+"\t"+"port: "+port;
+    }
 
     @PostMapping(value = "/add")
     @Operation(summary = "新增",description = "新增支付流水方法,json串做参数")
