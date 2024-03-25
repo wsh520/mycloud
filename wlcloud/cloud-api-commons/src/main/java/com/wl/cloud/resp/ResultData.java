@@ -37,6 +37,14 @@ public class ResultData<T> {
         return resultData;
     }
 
+    public static <T> ResultData<T> success() {
+        ResultData<T> resultData = new ResultData<>();
+        resultData.setCode(ReturnCodeEnum.RC200.getCode());
+        resultData.setMessage(ReturnCodeEnum.RC200.getMessage());
+        resultData.setData(null);
+        return resultData;
+    }
+
     public static <T> ResultData<T> fail(String code, String message) {
         ResultData<T> resultData = new ResultData<>();
         resultData.setCode(code);
