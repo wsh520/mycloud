@@ -26,8 +26,7 @@ public class PayController {
     private String port;
 
     @GetMapping(value = "/get/info")
-    private String getInfoByConsul(@Value("${wl.info}") String wlInfo)
-    {
+    private String getInfoByConsul(@Value("${wl.info}") String wlInfo) {
         return "wlInfo: "+wlInfo+"\t"+"port: "+port;
     }
 

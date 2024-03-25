@@ -11,3 +11,6 @@ spring:
       config:
         profile-separator: '-' # default value is ","，we update '-'
         format: YAML
+#       配置刷新时间,默认55秒
+        watch:
+          wait-time: 1
