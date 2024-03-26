@@ -1,14 +1,21 @@
 package com.wl.cloud.controller;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.wl.cloud.DTO.PayDTO;
 import com.wl.cloud.resp.ResultData;
 import jakarta.annotation.Resource;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/consumer")
@@ -21,6 +28,29 @@ public class OrderController {
 
     @Resource
     private RestTemplate restTemplate;
+
+    @Resource
+    DiscoveryClient discoveryClient;
+
+    @GetMapping("/get/instances")
+    public ResultData<List<String>> getInstances() {
+        List<String> result = new ArrayList<>();
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
+        if (!CollectionUtil.isEmpty(instances)) {
+            for (ServiceInstance instance : instances) {
+                String instanceId = instance.getInstanceId();
+                result.add(instanceId);
+                System.out.println(instance.toString());
+            }
+        }
+        return ResultData.success(result);
+    }
+
+    @GetMapping(value = "/pay/get/info")
+    private String getInfoByConsul()
+    {
+        return restTemplate.getForObject(PaymentSrv_URL + "/pay/get/info", String.class);
+    }
 
     /**
      * 一般情况下，通过浏览器的地址栏输入url，发送的只能是get请求

@@ -1,0 +1,16 @@
+# bootstrap 是系统级的，优先级更加高
+spring:
+  application:
+    name: cloud-payment-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+      config:
+        profile-separator: '-' # default value is ","，we update '-'
+        format: YAML
+#       配置刷新时间,默认55秒
+        watch:
+          wait-time: 1
