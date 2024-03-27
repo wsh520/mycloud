@@ -31,3 +31,7 @@ spring:
             connectTimeout: 10000
             #读取超时时间 ms,控制 Read timed out  超时
             readTimeout: 10000
+#      替换httpclient 如果不做特殊配置，OpenFeign默认使用JDK自带的HttpURLConnection发送HTTP请求，由于默认HttpURLConnection没有连接池、性能和效率比较低
+      httpclient:
+        hc5:
+          enabled: true
