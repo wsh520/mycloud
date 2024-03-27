@@ -70,7 +70,11 @@ public class PayController {
     @GetMapping(value = "/getAll")
     @Operation(summary = "查全部流水",description = "查询全部支付流水方法")
     public ResultData<List<Pay>> getAll(){
-
+        try {
+            TimeUnit.SECONDS.sleep(62);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return ResultData.success(payService.getAll());
     }
 }

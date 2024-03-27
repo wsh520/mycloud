@@ -21,7 +21,12 @@ spring:
             connectTimeout: 3000
             #读取超时时间 ms,控制 Read timed out  超时
             readTimeout: 3000
-          payment-service:
+          payment-service-5s:
+            #连接超时时间 ms
+            connectTimeout: 5000
+            #读取超时时间 ms,控制 Read timed out  超时
+            readTimeout: 5000
+          payment-service-10s:
             #连接超时时间 ms
             connectTimeout: 10000
             #读取超时时间 ms,控制 Read timed out  超时

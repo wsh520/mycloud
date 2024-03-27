@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import com.wl.cloud.DTO.PayDTO;
 import com.wl.cloud.apis.PayFeignApi;
+import com.wl.cloud.apis.PayFeignApi10s;
 import com.wl.cloud.enums.ReturnCodeEnum;
 import com.wl.cloud.resp.ResultData;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,9 @@ public class OrderController {
 
     @Resource
     private PayFeignApi payFeignApi;
+
+    @Resource
+    private PayFeignApi10s payFeignApi10s;
 
     @Resource
     DiscoveryClient discoveryClient;
@@ -73,7 +77,7 @@ public class OrderController {
         try
         {
             System.out.println("调用开始-----:"+ DateUtil.now());
-            resultData = payFeignApi.getPayInfo(id);
+            resultData = payFeignApi.getById(id);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("调用结束-----:"+DateUtil.now());
@@ -97,8 +101,18 @@ public class OrderController {
 
     @GetMapping(value = "/getAll")
     public ResultData getAll(){
-
-        return payFeignApi.getAll();
+        System.out.println("-------getAll 支付微服务远程调用，按照id查询订单支付流水信息");
+        ResultData resultData = null;
+        try
+        {
+            System.out.println("调用开始-----:"+ DateUtil.now());
+            resultData = payFeignApi10s.getAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("调用结束-----:"+DateUtil.now());
+            return ResultData.fail(ReturnCodeEnum.RC500.getCode(),e.getMessage());
+        }
+        return resultData;
     }
 
 }
