@@ -35,3 +35,20 @@ spring:
       httpclient:
         hc5:
           enabled: true
+      # 开启请求和相应压缩,设定请求压缩的类型
+      compression:
+        request:
+          enabled: true
+          min-request-size: 2048 #最小触发压缩的大小
+          mime-types: text/xml,application/xml,application/json #触发压缩数据类型
+        response:
+          enabled: true
+# 添加feign 日志,设置api 日志级别
+logging:
+  level:
+    com:
+      wl:
+        cloud:
+          apis:
+            PayFeignApi: debug
+            PayFeignApi10s: info
