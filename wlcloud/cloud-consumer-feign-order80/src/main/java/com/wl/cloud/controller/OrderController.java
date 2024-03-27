@@ -77,7 +77,7 @@ public class OrderController {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("调用结束-----:"+DateUtil.now());
-            ResultData.fail(ReturnCodeEnum.RC500.getCode(),e.getMessage());
+           return ResultData.fail(ReturnCodeEnum.RC500.getCode(),e.getMessage());
         }
         return resultData;
     }

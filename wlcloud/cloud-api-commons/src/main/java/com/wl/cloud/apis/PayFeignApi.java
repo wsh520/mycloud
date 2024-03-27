@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(value = "cloud-payment-service")
+@FeignClient(value = "cloud-payment-service",contextId = "payment-service")
 public interface PayFeignApi {
 
     /**
