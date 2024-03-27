@@ -4,10 +4,9 @@ package com.wl.cloud.apis;
 import com.wl.cloud.DTO.PayDTO;
 import com.wl.cloud.resp.ResultData;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @FeignClient(value = "cloud-payment-service")
 public interface PayFeignApi {
@@ -34,5 +33,18 @@ public interface PayFeignApi {
      */
     @GetMapping(value = "/pay/get/info")
     public String mylb();
+
+
+    @GetMapping(value = "/pay/getAll")
+    public ResultData getAll();
+
+    @GetMapping(value = "/pay/get/{id}")
+    public ResultData getById(@PathVariable("id") Integer id);
+
+    @PutMapping(value = "/pay/update")
+    public ResultData updatePay(@RequestBody PayDTO payDTO);
+
+    @DeleteMapping(value = "/pay/del/{id}")
+    public ResultData deletePay(@PathVariable("id") Integer id);
 
 }
