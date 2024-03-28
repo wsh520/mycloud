@@ -33,4 +33,11 @@ public interface PayFeignApi {
     @DeleteMapping(value = "/pay/del/{id}")
     public ResultData deletePay(@PathVariable("id") Integer id);
 
+    /**
+     * Resilience4j CircuitBreaker 的例子
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/pay/circuit/{id}")
+    public String myCircuit(@PathVariable("id") Integer id);
 }
