@@ -18,8 +18,22 @@ public class PayCircuitController {
     {
         if(id == -4) throw new RuntimeException("----circuit id 不能负数");
         if(id == 9999){
-            try { TimeUnit.SECONDS.sleep(5); } catch (InterruptedException e) { e.printStackTrace(); }
+            try { TimeUnit.SECONDS.sleep(15); } catch (InterruptedException e) { e.printStackTrace(); }
         }
         return "Hello, circuit! inputId:  "+id+" \t " + IdUtil.simpleUUID();
+    }
+
+    //=========Resilience4j bulkhead 的例子
+    @GetMapping(value = "/pay/bulkhead/{id}")
+    public String myBulkhead(@PathVariable("id") Integer id)
+    {
+        if(id == -4) throw new RuntimeException("----bulkhead id 不能-4");
+
+        if(id == 9999)
+        {
+            try { TimeUnit.SECONDS.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+
+        return "Hello, bulkhead! inputId:  "+id+" \t " + IdUtil.simpleUUID();
     }
 }
