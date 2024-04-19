@@ -45,9 +45,9 @@ spring:
           enabled: true
         # 开启circuitbreaker和分组激活 spring.cloud.openfeign.circuitbreaker.enabled
       circuitbreaker:
-        enabled: true
-        group:
-          enabled: true #没开分组永远不用分组的配置。精确优先、分组次之(开了分组)、默认最后
+        enabled: true # 演示Bulkhead.Type.THREADPOOL时
+#        group:
+#          enabled: true #没开分组永远不用分组的配置。精确优先、分组次之(开了分组)、默认最后
 
 # Resilience4j CircuitBreaker 按照次数：COUNT_BASED 的例子
 #  6次访问中当执行方法的失败率达到50%时CircuitBreaker将进入开启OPEN状态(保险丝跳闸断电)拒绝所有请求。
@@ -96,11 +96,20 @@ spring:
   # resilience4j bulkhead 的例子, 隔离
   ####resilience4j bulkhead 的例子
 resilience4j:
-  bulkhead:
+#  bulkhead:
+#    configs:
+#      default:
+#        maxConcurrentCalls: 2 # 隔离允许并发线程执行的最大数量
+#        maxWaitDuration: 1s # 当达到并发调用数量时，新的线程的阻塞时间，我只愿意等待1秒，过时不候进舱壁兜底fallback
+#    instances:
+#      cloud-payment-service:
+#        baseConfig: default
+  thread-pool-bulkhead:
     configs:
-      default:
-        maxConcurrentCalls: 2 # 隔离允许并发线程执行的最大数量
-        maxWaitDuration: 1s # 当达到并发调用数量时，新的线程的阻塞时间，我只愿意等待1秒，过时不候进舱壁兜底fallback
+      default: # 该三个参数为线程池 核心参数
+        core-thread-pool-size: 1 # 核心线程数
+        max-thread-pool-size: 1 # 最大线程数
+        queue-capacity: 1 # 队列容量
     instances:
       cloud-payment-service:
         baseConfig: default
@@ -108,6 +117,7 @@ resilience4j:
     configs:
       default:
         timeout-duration: 20s
+# spring.cloud.openfeign.circuitbreaker.group.enabled 设置为false 新启线程和原来主线程脱离,否则thread-pool-bulkhead 不生效
 
 # 添加feign 日志,设置api 日志级别
 logging:
