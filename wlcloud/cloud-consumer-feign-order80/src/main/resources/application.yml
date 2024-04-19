@@ -45,9 +45,9 @@ spring:
           enabled: true
         # 开启circuitbreaker和分组激活 spring.cloud.openfeign.circuitbreaker.enabled
       circuitbreaker:
-        enabled: true # 演示Bulkhead.Type.THREADPOOL时
-#        group:
-#          enabled: true #没开分组永远不用分组的配置。精确优先、分组次之(开了分组)、默认最后
+        enabled: true
+        group:
+          enabled: true #没开分组永远不用分组的配置。精确优先、分组次之(开了分组)、默认最后,# 演示Bulkhead.Type.THREADPOOL时,需设置为false
 
 # Resilience4j CircuitBreaker 按照次数：COUNT_BASED 的例子
 #  6次访问中当执行方法的失败率达到50%时CircuitBreaker将进入开启OPEN状态(保险丝跳闸断电)拒绝所有请求。
@@ -96,6 +96,16 @@ spring:
   # resilience4j bulkhead 的例子, 隔离
   ####resilience4j bulkhead 的例子
 resilience4j:
+  ratelimiter:
+    configs:
+      default:
+        limitForPeriod: 2 #在一次刷新周期内，允许执行的最大请求数
+        limitRefreshPeriod: 1s # 限流器每隔limitRefreshPeriod刷新一次，将允许处理的最大请求数量重置为limitForPeriod
+        timeout-duration: 1 # 线程等待权限的默认等待时间
+    instances:
+      cloud-payment-service:
+        baseConfig: default
+# --  Bulkhead.Type.SEMAPHORE 隔离配置
 #  bulkhead:
 #    configs:
 #      default:
@@ -104,20 +114,24 @@ resilience4j:
 #    instances:
 #      cloud-payment-service:
 #        baseConfig: default
-  thread-pool-bulkhead:
-    configs:
-      default: # 该三个参数为线程池 核心参数
-        core-thread-pool-size: 1 # 核心线程数
-        max-thread-pool-size: 1 # 最大线程数
-        queue-capacity: 1 # 队列容量
-    instances:
-      cloud-payment-service:
-        baseConfig: default
+
+
+# # --  Bulkhead.Type.THREADPOOL 隔离配置
+# spring.cloud.openfeign.circuitbreaker.group.enabled 设置为false 新启线程和原来主线程脱离,否则thread-pool-bulkhead 不生效
+#  thread-pool-bulkhead:
+#    configs:
+#      default: # 该三个参数为线程池 核心参数
+#        core-thread-pool-size: 1 # 核心线程数
+#        max-thread-pool-size: 1 # 最大线程数
+#        queue-capacity: 1 # 队列容量
+#    instances:
+#      cloud-payment-service:
+#        baseConfig: default
   timelimiter:
     configs:
       default:
         timeout-duration: 20s
-# spring.cloud.openfeign.circuitbreaker.group.enabled 设置为false 新启线程和原来主线程脱离,否则thread-pool-bulkhead 不生效
+
 
 # 添加feign 日志,设置api 日志级别
 logging:
