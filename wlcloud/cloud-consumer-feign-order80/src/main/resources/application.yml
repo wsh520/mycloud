@@ -21,7 +21,7 @@ spring:
             connectTimeout: 3000
             #读取超时时间 ms,控制 Read timed out  超时
             readTimeout: 3000
-          cloud-payment-service:
+          cloud-gateway:
             #连接超时时间 ms
             connectTimeout: 20000
             #读取超时时间 ms,控制 Read timed out  超时
@@ -140,7 +140,7 @@ management:
   tracing:
     sampling:
       probability: 1.0 #采样率默认为0.1(0.1就是10次只能有一次被记录下来)，值越大收集越及时。
-
+#
 
 # 添加feign 日志,设置api 日志级别
 logging:
@@ -151,3 +151,4 @@ logging:
           apis:
             PayFeignApi: debug
             PayFeignApi10s: info
+            PayGatewayApi: debug

@@ -6,7 +6,8 @@ import com.wl.cloud.resp.ResultData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(value = "cloud-payment-service")
+//@FeignClient(value = "cloud-payment-service")
+@FeignClient(value = "cloud-gateway",contextId = "basic")
 public interface PayFeignApi {
 
     /**
@@ -64,4 +65,5 @@ public interface PayFeignApi {
      */
     @GetMapping(value = "/pay/micrometer/{id}")
     public String myMicrometer(@PathVariable("id") Integer id);
+
 }
